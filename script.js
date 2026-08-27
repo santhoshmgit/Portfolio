@@ -1,21 +1,58 @@
-const cards = document.querySelectorAll(".card");
+// Typing Effect
 
-window.addEventListener("load", () => {
+const text = [
+    "Computer Science Student",
+    "Web Developer",
+    "Python Programmer",
+    "Future Software Engineer"
+];
 
-    cards.forEach((card, index) => {
+let index = 0;
+let char = 0;
+let deleting = false;
 
-        card.style.opacity = "0";
-        card.style.transform = "translateY(40px)";
+const typing = document.getElementById("typing");
 
-        setTimeout(() => {
+function typeEffect(){
 
-            card.style.transition = "all 0.7s ease";
+    const current = text[index];
 
-            card.style.opacity = "1";
-            card.style.transform = "translateY(0)";
+    if(!deleting){
+        typing.textContent = current.substring(0,char++);
+        if(char>current.length){
+            deleting = true;
+            setTimeout(typeEffect,1000);
+            return;
+        }
+    }else{
+        typing.textContent = current.substring(0,char--);
+        if(char<0){
+            deleting = false;
+            index = (index+1)%text.length;
+        }
+    }
 
-        }, index * 150);
+    setTimeout(typeEffect,deleting?50:100);
+}
 
-    });
+typeEffect();
+
+
+// Scroll Reveal
+
+const reveals = document.querySelectorAll(".reveal");
+
+window.addEventListener("scroll",()=>{
+
+reveals.forEach(section=>{
+
+const top = section.getBoundingClientRect().top;
+const visible = 150;
+
+if(top<window.innerHeight-visible){
+section.classList.add("active");
+}
+
+});
 
 });
